@@ -40,9 +40,7 @@ router.route('/addCategory')
 
 		try {
 			let duplicate = await Category.find({'alias': category.alias})
-			if(duplicate.length > 0) {
-				category.alias = category.alias + '_' + uuidv4()
-			}
+			if(duplicate.length > 0) category.alias = category.alias + '_' + uuidv4()
 			const newCategory = await category.save()
 			res.redirect(`/gallery/${newCategory.alias}`)
 		} catch {
