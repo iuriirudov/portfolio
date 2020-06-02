@@ -1,15 +1,15 @@
-const slugify = require('slugify');
+const slugify = require('slugify')
 
 function error(err) {
-	return console.log('Error: ' + err);
+	return console.log('Error: ' + err)
 }
 
 function slug(string) {
-	return slugify(string, {replacement: '_', lower: true});
+	return slugify(string, {replacement: '_', lower: true})
 }
 
 function randomNumber(n) {
-	return Math.ceil(Math.random()*n);
+	return Math.ceil(Math.random()*n)
 }
 
 
