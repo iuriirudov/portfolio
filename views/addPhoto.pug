@@ -1,0 +1,18 @@
+extends _layout
+
+block content
+	section.container
+		.row.mx-2.pb-5
+			form.w-100(action=`/gallery/${data.alias}/add` method='POST')
+				.form-row
+					.form-group.col-md-4
+						label.w-100(for='name') Name
+							input.form-control(type='text' name='name' id='name' placeholder='Name')
+					.form-group.col-md-8
+						label.w-100(for='image') Image URL
+							input.form-control(type='text' name='image' id='image' placeholder='Image URL')
+				.form-group
+					label.w-100(for='tags') Tags
+						input.form-control(type='text' name='tags' id='tags' placeholder='portrait, wedding, baby, sky, night, happy, ocean, couple, love, water')
+				.form-group
+					button.btn.btn-primary.w-100 Add a Photo

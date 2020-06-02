@@ -1,0 +1,46 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+* {
+	font-family: 'Roboto Condensed', sans-serif;
+}
+
+.alpha-black-bg {
+	background-color: rgba(0,0,0,0.25)
+}
+.card-body-custom-position {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.card-custom-position {
+	padding-top: 100%;
+	position: relative;
+}
+
+@media (min-width: 2500px) {
+	.row-cols-xxl-6 > * {
+		-ms-flex: 0 0 16.666667%;
+		flex: 0 0 16.666667%;
+		max-width: 16.666667%;
+	}
+	.container {
+		max-width: 1800px;
+	}
+	* {
+		font-size: 40px;
+	}
+}
+@media (max-width: 1000px) {
+	* {
+		font-size: 35px;
+	}
+	.nav-link {
+		font-size: 45px;
+	}
+}

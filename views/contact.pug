@@ -1,0 +1,19 @@
+extends _layout
+
+block content
+	section.container
+		.row.mx-2.pb-5
+			h1.mx-auto Send an Email to me
+			form.w-100
+				.form-row
+					.form-group.col-md-4
+						label.w-100(for='name') Name
+							input.form-control(type='text' name='name' id='name' placeholder='Name' required)
+					.form-group.col-md-8
+						label.w-100(for='email') Email
+							input.form-control(type='email' name='image' id='image' placeholder='Your email' required)
+				.form-group
+					label.w-100(for='message') Message
+						textarea.form-control(name='message' id='message' placeholder='Message' rows='8' required)
+				.form-group
+					button.btn.btn-primary.w-100 Send

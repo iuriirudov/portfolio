@@ -1,0 +1,28 @@
+extends _layout
+
+block content
+		section.container
+			.row.mx-2.pb-5
+				form.w-100(action=`/gallery/${photo.category.alias}/${photo.alias}?_method=PUT` method='POST')
+					.form-row
+						.form-group.col-md-4
+							label.w-100(for='name') Name
+								input.form-control(type='text' name='name' id='name' value=`${photo.name}` placeholder='Name')
+						.form-group.col-md-8
+							label.w-100(for='image') Image URL
+								input.form-control(type='text' name='image' id='image' value=`${photo.image}` placeholder='Image URL')
+					.form-group
+						.input-group
+							.input-group-prepend
+								label.input-group-text(for='category') Category for your photo:
+							select.custom-select(name='cat_id' id='category')
+								each catalog in allCategories
+									if photo.category.alias === catalog.alias
+										option(value=`${catalog._id}` selected) #{catalog.name}
+									else
+										option(value=`${catalog._id}`) #{catalog.name}
+					.form-group
+						label.w-100(for='tags') Tags
+							input.form-control(type='text' name='tags' id='tags' value=`${photo.tags}` placeholder='portrait, wedding, baby, sky, night, happy, ocean, couple, love, water')
+					.form-group
+						button.btn.btn-primary.w-100 Update

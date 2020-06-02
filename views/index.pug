@@ -1,0 +1,12 @@
+extends _layout
+
+block content
+		section.container-fluid
+			.text-center
+				.row.my-5.row-cols-1.row-cols-md-2.row-cols-lg-3.row-cols-xl-4.row-cols-xxl-6.justify-content-center
+					each photo in photos
+						.col.mb-4
+							.card.shadow.border-0.card-custom-position(style=`background: url("${photo.image}") center; background-size: cover;`)
+								.card-body.card-body-custom-position
+									h6.card-title.py-3.rounded-pill.alpha-black-bg
+										a.stretched-link.text-white(href=`/gallery/${photo.category.alias}/${photo.alias}`) #{photo.name}

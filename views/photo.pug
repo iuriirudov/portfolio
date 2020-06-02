@@ -1,0 +1,35 @@
+extends _layout
+
+block content
+	section.container
+		.row
+			.col
+				p Go back to 
+					a(href=`/gallery/${photo.category.alias}`) #{photo.category.name}
+					|
+					|category
+		.row.py-3
+			.col-lg
+				img.img-fluid.d-block.mx-auto(src=`${photo.image}`)
+				div
+					p
+						em Picture viewed #{photo.views} times
+					p
+					if photo.tags && photo.tags.length > 0 && photo.tags[0] != ''
+						|Tags: 
+						each item in photo.tags
+							button.btn.btn-secondary.btn-sm.m-1 #{item}
+			.col-lg
+				p Title: #{photo.name}
+				p ID: #{photo._id}
+				p Category ID: #{photo.category.id}
+				p Category Name: #{photo.category.name}
+				p Category Alias: #{photo.category.alias}
+				p Created: #{photo.dateOfCreation}
+				p Modified: #{photo.dateOfModification}
+				p Image URL: #{photo.image}
+				p Alias: #{photo.alias}
+				div
+					a.btn.btn-primary.mx-1(href=`/gallery/${photo.category.alias}/${photo.alias}/edit`) Edit
+					form.d-inline(action=`/gallery/${photo.category.alias}?_method=DELETE` method="POST")
+						button.btn.btn-danger Delete

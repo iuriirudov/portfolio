@@ -1,0 +1,13 @@
+extends _layout
+
+block content
+		section.container
+			.row.mx-2.pb-5
+				form.w-100(action="/gallery/" + category.alias + "/?_method=PUT" method="POST")
+					.form-group
+						label.w-100(for="name") Name
+							input.form-control(type="text" name="name" id="name" required placeholder='Type in a name for your category' value=`${category.name}`)
+					.form-group
+						label.w-100(for="image") Image URL
+							input.form-control(type="text" name="image" id="image" required placeholder='Type in an image URL for your category' value=`${category.image}`)
+					button.btn.btn-primary.w-100 Update

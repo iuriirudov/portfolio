@@ -1,0 +1,13 @@
+extends _layout
+
+block content
+	section.container-fluid
+		.text-center
+			a.btn.btn-success(href="/gallery/addCategory") Add a new folder
+			.row.my-5.row-cols-1.row-cols-md-2.row-cols-lg-3.row-cols-xl-4.row-cols-xxl-6.justify-content-center
+				each category in categories
+					.col.mb-4
+						.card.shadow.border-0.card-custom-position(style=`background: url("${category.image}") center; background-size: cover;`)
+							.card-body.card-body-custom-position
+								h6.card-title.py-3.rounded-pill.alpha-black-bg
+									a.stretched-link.text-white(href="/gallery/" + category.alias) #{category.name}
