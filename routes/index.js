@@ -1,38 +1,33 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 // MongoDB model
-let Photo = require('../models/photo');
+let Photo = require('../models/photo')
 
 router.route('/')
-	.get((req, res) => {
-		Photo.find()
-		.sort({_id: -1})
-		.limit(20)
-		.exec()
-		.then(photos => {
+	.get(async(req, res) => {
+		try {
+			const photos = await Photo.find().sort({_id: -1}).limit(20)
 			res.render('index', {
-				photos: photos,
+				photos,
 				title: 'Recently Added Photos',
 				nameOfThePage: 'Recently Added Photos'
-			});
-		})
-		.catch(err => {
-			custom.error(err);
-			res.status(500).json({error: err})
-		});
+			})
+		} catch {
+			res.redirect('/gallery')
+		}
 	})
 	.post((req, res) => {
-		res.send('This was a post request');
+		res.send('POST')
 	})
 	.put((req, res) => {
-		res.send('This is PUT');
+		res.send('PUT')
 	})
 	.patch((req, res) => {
-		res.send('PATCH request');
+		res.send('PATCH')
 	})
 	.delete((req, res) => {
-		res.send('DELETE request');
+		res.send('DELETE')
 	})
 
-module.exports = router;
+module.exports = router

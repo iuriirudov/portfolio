@@ -1,9 +1,9 @@
-extends _layout
+extends ../_layout
 
 block content
 		section.container
 			.row.mx-2.pb-5
-				form.w-100(action=`/gallery/${photo.category.alias}/${photo.alias}?_method=PUT` method='POST')
+				form.w-100(action=`/gallery/${photo.categoryAlias}/${photo.alias}?_method=PUT` method='POST')
 					.form-row
 						.form-group.col-md-4
 							label.w-100(for='name') Name
@@ -16,9 +16,9 @@ block content
 							.input-group-prepend
 								label.input-group-text(for='category') Category for your photo:
 							select.custom-select(name='cat_id' id='category')
-								each catalog in allCategories
-									if photo.category.alias === catalog.alias
-										option(value=`${catalog._id}` selected) #{catalog.name}
+								each catalog in categories
+									if photo.categoryAlias === catalog.alias
+										option(value=`${catalog._id}` selected class='gray') #{catalog.name} (Current)
 									else
 										option(value=`${catalog._id}`) #{catalog.name}
 					.form-group

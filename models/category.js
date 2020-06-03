@@ -1,6 +1,5 @@
-let mongoose = require('mongoose');
+let mongoose = require('mongoose')
 
-// Category Schema
 let categorySchema = mongoose.Schema({
 	name: {
 		type: String,
@@ -16,4 +15,4 @@ let categorySchema = mongoose.Schema({
 	}
 });
 
-let Category = module.exports = mongoose.model('Category', categorySchema);
+let Category = module.exports = mongoose.model('Category', categorySchema)

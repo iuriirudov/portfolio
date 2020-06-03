@@ -68,13 +68,12 @@ router.route('/:alias')
 			'alias': custom.slug(req.body.name)
 		}
 		try {
-			let duplicate = await Category.findOne({'alias': formData.alias})
-			if(duplicate && duplicate.alias != req.params.alias) formData.alias += '_' + uuidv4()
+			let category = await Category.findOne({'alias': formData.alias})
+			if(category && category.alias != req.params.alias) formData.alias += '_' + uuidv4()
 			await Category.updateOne({'alias': req.params.alias}, formData)
 			await Photo.updateMany({ 'categoryAlias': req.params.alias }, {'categoryAlias': formData.alias})
 			res.redirect(`/gallery/${formData.alias}`)
-		} catch(err) {
-			console.log(err)
+		} catch {
 			res.redirect('/gallery')
 		}
 	})
@@ -82,7 +81,7 @@ router.route('/:alias')
 		try {
 			const category = await Category.findOne({'alias': req.params.alias})
 			if(category.alias != req.params.alias) return res.redirect('back')
-			await Category.deleteOne({'alias': req.params.alias, '_id': category._id})
+			await category.deleteOne()
 			await Photo.deleteMany({'categoryAlias': category.alias})
 			res.redirect('/gallery')
 		} catch {
@@ -104,4 +103,4 @@ router.get('/:alias/edit', async(req, res) => {
 	}
 })
 
-module.exports = router;
+module.exports = router

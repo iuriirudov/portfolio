@@ -1,6 +1,5 @@
-let mongoose = require('mongoose');
+let mongoose = require('mongoose')
 
-// Photo Schema
 let photoSchema = mongoose.Schema({
 	name: {
 		type: String,
@@ -32,6 +31,6 @@ let photoSchema = mongoose.Schema({
 	views: {
 		type: Number
 	}
-});
+})
 
-let Photo = module.exports = mongoose.model('Photo', photoSchema);
+let Photo = module.exports = mongoose.model('Photo', photoSchema)

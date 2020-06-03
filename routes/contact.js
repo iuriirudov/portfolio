@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 router.route('/')
 	.get((req, res) => {
@@ -9,16 +9,16 @@ router.route('/')
 		});
 	})
 	.post((req, res) => {
-		res.send('This was a post request');
+		res.send('POST')
 	})
 	.put((req, res) => {
-		res.send('This is PUT');
+		res.send('PUT')
 	})
 	.patch((req, res) => {
-		res.send('PATCH request');
+		res.send('PATCH')
 	})
 	.delete((req, res) => {
-		res.send('DELETE request');
+		res.send('DELETE')
 	})
 
-module.exports = router;
+module.exports = router

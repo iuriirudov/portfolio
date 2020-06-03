@@ -1,11 +1,11 @@
-extends _layout
+extends ../_layout
 
 block content
 	section.container
 		.row
 			.col
 				p Go back to 
-					a(href=`/gallery/${photo.category.alias}`) #{photo.category.name}
+					a(href=`/gallery/${category.alias}`) #{category.name}
 					|
 					|category
 		.row.py-3
@@ -22,14 +22,14 @@ block content
 			.col-lg
 				p Title: #{photo.name}
 				p ID: #{photo._id}
-				p Category ID: #{photo.category.id}
-				p Category Name: #{photo.category.name}
-				p Category Alias: #{photo.category.alias}
+				p Category ID: #{category.id}
+				p Category Name: #{category.name}
+				p Category Alias: #{category.alias}
 				p Created: #{photo.dateOfCreation}
 				p Modified: #{photo.dateOfModification}
 				p Image URL: #{photo.image}
 				p Alias: #{photo.alias}
 				div
-					a.btn.btn-primary.mx-1(href=`/gallery/${photo.category.alias}/${photo.alias}/edit`) Edit
-					form.d-inline(action=`/gallery/${photo.category.alias}?_method=DELETE` method="POST")
+					a.btn.btn-primary.mx-1(href=`/gallery/${category.alias}/${photo.alias}/edit`) Edit
+					form.d-inline(action=`/gallery/${category.alias}/${photo.alias}?_method=DELETE` method="POST")
 						button.btn.btn-danger Delete
