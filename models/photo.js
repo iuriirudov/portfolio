@@ -6,13 +6,9 @@ let photoSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	category: {
-		id: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Category'
-		},
-		alias: String,
-		name: String
+	categoryAlias: {
+		type: String,
+		required: true
 	},
 	image: {
 		type: String,

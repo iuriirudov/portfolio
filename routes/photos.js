@@ -9,17 +9,15 @@ const Photo = require('../models/photo')
 router.route('/:cat/add')
 	.get(async(req, res) => {
 		try {
-			await Category.find({'alias': req.params.cat}, (err, category) => {
-				if(err || !category || category.length != 1) return res.redirect('back');
-				res.render('addPhoto', {
-					data: category[0],
-					title: `Adding a photo to ${category[0].name}`,
-					nameOfThePage: `Adding a photo to ${category[0].name}`
-				});
-			});
+			const category = await Category.findOne({'alias': req.params.cat})
+			if(!category) return res.redirect('/gallery')
+			res.render('photos/add', {
+				data: category,
+				title: `Adding a photo to ${category.name}`,
+				nameOfThePage: `Adding a photo to ${category.name}`
+			})
 		} catch(err) {
-			console.log(err);
-			res.redirect('back');
+			res.redirect('/gallery')
 		}
 	})
 	.post(async(req, res) => {

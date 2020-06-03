@@ -6,7 +6,6 @@ const custom = require('../functions.js')
 const Category = require('../models/category')
 const Photo = require('../models/photo')
 
-// All Categories Route
 router.route('/')
 	.get(async(req, res) => {
 		try {
@@ -29,16 +28,13 @@ router.route('/addCategory')
 		})
 	})
 	.post(async(req, res) => {
-		if(!req.body.name || !req.body.image) {
-			return res.redirect('/')
-		}
-		const category = new Category({
-			name: req.body.name,
-			image: req.body.image,
-			alias: custom.slug(req.body.name)
-		})
-
+		if(!req.body.name || !req.body.image) return res.redirect('/')
 		try {
+			let category = new Category({
+				name: req.body.name,
+				image: req.body.image,
+				alias: custom.slug(req.body.name)
+			})
 			let duplicate = await Category.find({'alias': category.alias})
 			if(duplicate.length > 0) category.alias = category.alias + '_' + uuidv4()
 			const newCategory = await category.save()
@@ -48,99 +44,64 @@ router.route('/addCategory')
 		}
 	})
 
-router.route('/:id')
-	.get((req, res) => {
-		Photo.find({'category.alias': req.params.id})
-		.sort({_id: -1})
-		.exec()
-		.then(photos => {
-			if(photos.length != 0) {
-				res.render('category', {
-					photos: photos,
-					category: photos[0].category,
-					title: photos[0].category.name,
-					nameOfThePage: photos[0].category.name
-				});
-			} else {
-				Category.findOne({'alias': req.params.id})
-				.exec()
-				.then(category => {
-					res.render('category', {
-						category: category,
-						title: category.name,
-						nameOfThePage: category.name
-					})
-				})
-				.catch(err => {
-					console.log(err);
-					return res.redirect(`/gallery/`);
-					//res.status(500).json({error: err});
-				});
-			}
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({
-				error: err
-			});
-		});
+router.route('/:alias')
+	.get(async(req, res) => {
+		try {
+			const photos = await Photo.find({'categoryAlias': req.params.alias}).sort({_id: -1})
+			const category = await Category.findOne({'alias': req.params.alias})
+			if(photos.length == 0 && !category) return res.redirect('/gallery')
+			res.render('photos/index', {
+				photos,
+				category,
+				title: category.name,
+				nameOfThePage: category.name
+			})
+		} catch {
+			res.send('asd')
+		}
 	})
 	.put(async(req, res) => {
-		if(!req.body.name && !req.body.image) {
-			return res.redirect('/');
+		if(!req.body.name || !req.body.image) return res.redirect('/gallery')
+		let formData = {
+			'name': req.body.name,
+			'image': req.body.image,
+			'alias': custom.slug(req.body.name)
 		}
-		await Category.findOne({'alias': req.params.id}, async(err, category) => {
-			if(!category && category.alias != req.params.id) {
-				console.log(err);
-				return res.redirect('/gallery');
-			}
-			let formData = {
-				'name': req.body.name,
-				'image': req.body.image,
-				'alias': custom.slug(req.body.name)
-			};
-			let duplicate = await Category.find({'alias': formData.alias});
-			if(duplicate.length > 0 && !duplicate[0]._id.equals(category._id)) {
-				formData.alias = formData.alias + '_' + uuidv4();
-			}
-			await Category.updateOne({'alias': req.params.id}, formData, async err => {
-				await Photo.updateMany({ 'category.id': category._id }, {'category.name': formData.name, 'category.alias': formData.alias}, err => {});
-				await (err) ? res.redirect('/') : res.redirect(`/gallery/${formData.alias}`);
-			});
-		});
+		try {
+			let duplicate = await Category.findOne({'alias': formData.alias})
+			if(duplicate && duplicate.alias != req.params.alias) formData.alias += '_' + uuidv4()
+			await Category.updateOne({'alias': req.params.alias}, formData)
+			await Photo.updateMany({ 'categoryAlias': req.params.alias }, {'categoryAlias': formData.alias})
+			res.redirect(`/gallery/${formData.alias}`)
+		} catch(err) {
+			console.log(err)
+			res.redirect('/gallery')
+		}
 	})
 	.delete(async(req, res) => {
-		await Category.findOne({'alias': req.params.id}, async(err, category) => {
-			if(!category && category.alias != req.params.id) {
-				console.log(err);
-				return res.redirect('/gallery');
-			}
-			try {
-				await Category.deleteOne({'alias': req.params.id, '_id': category._id}, async(err) => {
-					await Photo.deleteMany({'category.id': category._id}, (err) => {
-						return res.redirect('/gallery');
-					});
-				});
-			} catch(err) {
-				console.log(err);
-				return res.redirect('back');
-			}
-		});
-	});
-
-router.get('/:id/edit', async(req, res) => {
-	await Category.findOne({'alias': req.params.id}, (err, category) => {
-		if(category && category.alias === req.params.id) {
-			res.render('galleryEditCategory', {
-				category: category,
-				title: 'Editing Category: ' + category.name,
-				nameOfThePage: 'Editing Category: ' + category.name
-			});
-		} else {
-			console.log(err);
-			res.redirect('/gallery');
+		try {
+			const category = await Category.findOne({'alias': req.params.alias})
+			if(category.alias != req.params.alias) return res.redirect('back')
+			await Category.deleteOne({'alias': req.params.alias, '_id': category._id})
+			await Photo.deleteMany({'categoryAlias': category.alias})
+			res.redirect('/gallery')
+		} catch {
+			res.redirect('back');
 		}
-	});
-});
+	})
+
+router.get('/:alias/edit', async(req, res) => {
+	try {
+		const category = await Category.findOne({'alias': req.params.alias})
+		if(!category || category.alias != req.params.alias) return res.redirect('/gallery')
+		res.render('categories/edit', {
+			category,
+			title: 'Editing Category: ' + category.name,
+			nameOfThePage: 'Editing Category: ' + category.name
+		})
+	} catch {
+		res.redirect('/gallery')
+	}
+})
 
 module.exports = router;
