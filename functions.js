@@ -12,7 +12,6 @@ function randomNumber(n) {
 	return Math.ceil(Math.random()*n)
 }
 
-
 module.exports = {
 	error,
 	slug,
