@@ -57,7 +57,7 @@ router.route('/:alias')
 				nameOfThePage: category.name
 			})
 		} catch {
-			res.send('asd')
+			res.redirect('/')
 		}
 	})
 	.put(async(req, res) => {
