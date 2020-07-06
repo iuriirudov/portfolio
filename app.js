@@ -21,7 +21,7 @@ app.use('/static', express.static(path.join(__dirname, '/public')))
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
 app.use(bodyParser.json())
 
-mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.DATABASE_URL + 'photo-portfolio', {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to Mongoose'))
