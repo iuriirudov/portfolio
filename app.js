@@ -33,4 +33,4 @@ app.use('/about', about)
 app.use('/contact', contact)
 app.use('/order', order)
 
-app.listen(process.env.PORT || 3000, process.env.IP, () => console.log('Server is started'))
+app.listen(process.env.PORT || 3001, process.env.IP, () => console.log('Server is started'))
