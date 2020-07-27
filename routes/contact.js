@@ -4,7 +4,7 @@ const router = express.Router()
 router.route('/')
 	.get((req, res) => {
 		res.render('contact', {
-			title: 'Contact',
+			title: 'Send a message to me',
 			nameOfThePage: 'Contact Page'
 		});
 	})
