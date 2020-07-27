@@ -2,12 +2,13 @@ const express = require('express')
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const custom = require('../functions.js')
+const middleware = require('../middleware/login')
 
 const Category = require('../models/category')
 const Photo = require('../models/photo')
 
 router.route('/:cat/add')
-	.get(async(req, res) => {
+	.get(middleware.redirectLogin, async(req, res) => {
 		try {
 			const category = await Category.findOne({'alias': req.params.cat})
 			if(!category) return res.redirect('/gallery')
@@ -20,7 +21,7 @@ router.route('/:cat/add')
 			res.redirect('/gallery')
 		}
 	})
-	.post(async(req, res) => {
+	.post(middleware.redirectLogin, async(req, res) => {
 		if(!req.body.name || !req.body.image) return res.redirect('/')
 		try {
 			const category = await Category.findOne({'alias': req.params.cat})
@@ -41,7 +42,7 @@ router.route('/:cat/add')
 		}
 	});
 
-router.get('/:cat/:photo/edit', async(req, res) => {
+router.get('/:cat/:photo/edit', middleware.redirectLogin, async(req, res) => {
 	try {
 		const photo = await Photo.findOne({'alias': req.params.photo})
 		if(!photo || photo.alias != req.params.photo || photo.categoryAlias != req.params.cat) return res.redirect('/gallery')
@@ -76,7 +77,7 @@ router.route('/:cat/:photo')
 			res.redirect('/gallery')
 		}
 	})
-	.delete(async(req, res) => {
+	.delete(middleware.redirectLogin, async(req, res) => {
 		try {
 			const photo = await Photo.findOne({'alias': req.params.photo})
 			if(!photo || photo.alias != req.params.photo || photo.categoryAlias != req.params.cat) return res.redirect('back')
@@ -86,7 +87,7 @@ router.route('/:cat/:photo')
 			res.redirect('/gallery')
 		}
 	})
-	.put(async(req, res) => {
+	.put(middleware.redirectLogin, async(req, res) => {
 		if(!req.body.name || !req.body.image || !req.body.cat_id || !req.body.tags) return res.redirect('/gallery')
 		let formData = {
 			'name': req.body.name,

@@ -29,7 +29,8 @@ block content
 				p Modified: #{photo.dateOfModification}
 				p Image URL: #{photo.image}
 				p Alias: #{photo.alias}
-				div
-					a.btn.btn-primary.mx-1(href=`/gallery/${category.alias}/${photo.alias}/edit`) Edit
-					form.d-inline(action=`/gallery/${category.alias}/${photo.alias}?_method=DELETE` method="POST")
-						button.btn.btn-danger Delete
+				if user
+					div
+						a.btn.btn-primary.mx-1(href=`/gallery/${category.alias}/${photo.alias}/edit`) Edit
+						form.d-inline(action=`/gallery/${category.alias}/${photo.alias}?_method=DELETE` method="POST")
+							button.btn.btn-danger Delete

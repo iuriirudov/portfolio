@@ -1,0 +1,16 @@
+extends ../_layout
+
+block content
+        section.container
+            .row.mx-2.pb-5
+                if user
+                    ul
+                        li Name: #{user.name}
+                        li Email: #{user.email}
+                        li Admin: #{user.isAdmin}
+                    a(href="/user") Home
+                    form(action="/user/logout" method="POST")
+                        button Logout
+                else
+                    a(href="/user/register") Registration
+                    a(href="/user/register") Login

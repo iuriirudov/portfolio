@@ -1,0 +1,17 @@
+extends ../_layout
+
+block content
+        section.container
+            .row.mx-2.pb-5
+                form.w-100(action="/user/register" method="POST")
+                    .form-group
+                        label.w-100(for="name") Name
+                            input.form-control(type="text" name="name" id="name" placeholder='Type in your name' required)
+                    .form-group
+                        label.w-100(for="email") Email:
+                            input.form-control(type="text" name="email" id="email" placeholder='Type in your email' required)
+                    .form-group
+                        label.w-100(for="password") Password:
+                            input.form-control(type="password" name="password" id="password" placeholder='Your Password' required)
+                    button.btn.btn-primary.w-100 Register
+                a(href="/user/login") Login

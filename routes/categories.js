@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid')
 const custom = require('../functions.js')
+const middleware = require('../middleware/login')
 
 const Category = require('../models/category')
 const Photo = require('../models/photo')
@@ -21,13 +22,13 @@ router.route('/')
 	})
 
 router.route('/addCategory')
-	.get((req, res) => {
+	.get(middleware.redirectLogin, (req, res) => {
 		res.render('categories/new', {
 			title: 'Add a category',
 			nameOfThePage: 'Adding a category'
 		})
 	})
-	.post(async(req, res) => {
+	.post(middleware.redirectLogin, async(req, res) => {
 		if(!req.body.name || !req.body.image) return res.redirect('/')
 		try {
 			let category = new Category({
@@ -60,7 +61,7 @@ router.route('/:alias')
 			res.redirect('/')
 		}
 	})
-	.put(async(req, res) => {
+	.put(middleware.redirectLogin, async(req, res) => {
 		if(!req.body.name || !req.body.image) return res.redirect('/gallery')
 		let formData = {
 			'name': req.body.name,
@@ -77,7 +78,7 @@ router.route('/:alias')
 			res.redirect('/gallery')
 		}
 	})
-	.delete(async(req, res) => {
+	.delete(middleware.redirectLogin, async(req, res) => {
 		try {
 			const category = await Category.findOne({'alias': req.params.alias})
 			if(category.alias != req.params.alias) return res.redirect('back')
@@ -89,7 +90,7 @@ router.route('/:alias')
 		}
 	})
 
-router.get('/:alias/edit', async(req, res) => {
+router.get('/:alias/edit', middleware.redirectLogin, async(req, res) => {
 	try {
 		const category = await Category.findOne({'alias': req.params.alias})
 		if(!category || category.alias != req.params.alias) return res.redirect('/gallery')
