@@ -24,6 +24,7 @@ const about = require('./routes/about')
 const contact = require('./routes/contact')
 const order = require('./routes/order')
 
+// test comment
 app.set('view engine', 'pug')
 app.set('views', __dirname + '/views')
 app.use(methodOverride('_method'))
